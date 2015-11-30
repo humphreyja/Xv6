@@ -27,6 +27,7 @@ OBJS = \
 	uart.o\
 	vectors.o\
 	vm.o\
+	passwd.o\
 
 # Cross-compiling (e.g., on Mac OS X)
 # TOOLPREFIX = i386-jos-elf
@@ -156,6 +157,8 @@ mkfs: mkfs.c fs.h
 # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 .PRECIOUS: %.o
 
+AUTH=auth_passwd.conf
+
 UPROGS=\
 	_cat\
 	_echo\
@@ -173,8 +176,8 @@ UPROGS=\
 	_wc\
 	_zombie\
 
-fs.img: mkfs README $(UPROGS)
-	./mkfs fs.img README $(UPROGS)
+fs.img: mkfs README $(AUTH) $(UPROGS)
+	./mkfs fs.img README $(AUTH) $(UPROGS)
 
 -include *.d
 
@@ -187,7 +190,7 @@ clean:
 
 # make a printout
 FILES = $(shell grep -v '^\#' runoff.list)
-PRINT = runoff.list runoff.spec README toc.hdr toc.ftr $(FILES)
+PRINT = runoff.list runoff.spec README toc.hdr toc.ftr $(AUTH) $(FILES)
 
 xv6.pdf: $(PRINT)
 	./runoff
@@ -243,7 +246,7 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
-	.gdbinit.tmpl gdbutil\
+	.gdbinit.tmpl gdbutil $(AUTH)\
 
 dist:
 	rm -rf dist
