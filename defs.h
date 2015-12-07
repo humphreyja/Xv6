@@ -118,6 +118,8 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
+void            setuser(int);
+int             getuser(int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

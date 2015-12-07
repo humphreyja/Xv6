@@ -1,0 +1,1 @@
+int CURRENT_USER = -1;

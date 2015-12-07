@@ -4,6 +4,9 @@
 #include "user.h"
 #include "x86.h"
 
+
+
+
 char*
 strcpy(char *s, char *t)
 {
@@ -27,6 +30,15 @@ uint
 strlen(char *s)
 {
   int n;
+
+  for(n = 0; s[n]; n++)
+    ;
+  return n;
+}
+
+uint
+stringlen(char **s){
+	int n;
 
   for(n = 0; s[n]; n++)
     ;
@@ -103,3 +115,123 @@ memmove(void *vdst, void *vsrc, int n)
     *dst++ = *src++;
   return vdst;
 }
+
+
+
+
+/*
+char**
+split_str(char* str){
+  int i;
+  int cc = 0;
+  int strctr = 0;
+  char c;
+  char *newstring;
+  char **split;
+  
+  char subbuff[5];
+memcpy( subbuff, &buff[10], 4 );
+subbuff[4] = '\0';
+  
+  
+  for(i=0; i < strlen(str); i++ ){
+	c = str[i];
+    if(c == '\n' || c == '\r'){
+	  split[strctr++] = newstring;
+      continue;
+	}
+	newstring[cc++] = c;
+  }
+  
+  return split;
+}
+
+
+	
+	int passfile;
+	char buf[512];
+	passfile = open("auth_passwd.conf", 0);
+	int n = 0;
+	int ctr = 0;
+
+	//struct USER tmp;
+	
+
+  
+  
+	while((read(passfile, buf, sizeof(buf))) > 0)
+	{
+		char ** fileStuff = split_str(buf);
+		for(n = 0; n < stringlen(fileStuff); n++){
+			printf(1,"HERE: %s",fileStuff[n]);
+		}
+		
+		
+		if(line % 2 == 0){
+			//even
+			tmp.name = buf;
+			printf(1,"TESTN: %s\n",tmp.name);
+		}else{
+			//odd
+			tmp.pass = buf;
+			users[ctr] = tmp;
+			printf(1,"TESTP: %s\n",tmp.pass);
+			ctr++;
+		}
+		line++;
+		
+	}*/
+int
+strcmp_c(const char *s1, const char *s2)
+{
+    for ( ; *s1 == *s2; s1++, s2++)
+	if (*s1 == '\0')
+	    return 0;
+    return ((*(unsigned char *)s1 < *(unsigned char *)s2) ? -1 : +1);
+}
+
+
+struct USER
+readuser(){
+	char buff1[512], buff2[512];
+	struct USER u;
+	printf(1,"Please enter a username: ");
+	u.name = gets(buff1, 50);
+	printf(1,"Please enter a password: ");
+	u.pass = gets(buff2, 50);
+	return u;
+}
+
+int
+compareuser(int state){
+	struct USER users[20];
+	struct USER u1,u2;
+	u1.name = "john\n";
+	u1.pass = "1234\n";
+	u2.name = "james\n";
+	u2.pass = "pass\n";
+	users[0] = u1;
+	users[1] = u2;
+	
+	int ctr;
+
+	while(1 == 1){
+		struct USER u = readuser();
+		
+		for(ctr = 0; ctr < 20; ctr++)
+		{
+
+			if(strcmp_c(u.name,users[ctr].name) == 0 && strcmp_c(u.pass,users[ctr].pass) == 0)
+			{
+				
+				setuser(ctr);
+				return 1;
+			}
+		}
+		printf(1,"Invalid username/password\n");
+		if(state != 1)
+			break;
+	}
+	return 0;
+}
+

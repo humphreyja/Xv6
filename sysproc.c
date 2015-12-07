@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "kpasswd.h"
 
 int
 sys_fork(void)
@@ -88,4 +89,16 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+
+int
+sys_getuser(void){
+	return CURRENT_USER;
+}
+
+int
+sys_setuser(void){
+	argint(0,&CURRENT_USER);
+	return 1;
 }

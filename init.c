@@ -5,6 +5,8 @@
 #include "user.h"
 #include "fcntl.h"
 
+
+
 char *argv[] = { "sh", 0 };
 
 int
@@ -27,6 +29,7 @@ main(void)
       exit();
     }
     if(pid == 0){
+	  compareuser(1);
       exec("sh", argv);
       printf(1, "init: exec sh failed\n");
       exit();
@@ -35,3 +38,5 @@ main(void)
       printf(1, "zombie!\n");
   }
 }
+
+
